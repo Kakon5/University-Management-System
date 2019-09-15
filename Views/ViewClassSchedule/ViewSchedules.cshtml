@@ -1,0 +1,108 @@
+﻿@using UniversityManagementSystem.Models
+
+@{
+    ViewBag.Title = "View Class Schedules";
+}
+
+@section styles{
+    <link href="~/Content/css/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    #viewScheduleForm {
+        width: 800px;
+        margin-left: 250px;
+        margin-top: 150px;
+    }
+    
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+
+}
+
+<div>
+    <form id="viewScheduleForm" method="POST">
+        <fieldset>
+            <legend>View Class Schedule and Room Allocation Information</legend>
+            <table>
+                <tr>
+                    <td><label for="DepartmentId">Department</label></td>
+                    <td>
+                        <select id="DepartmentId" name="DepartmentId">
+                            <option value="">---Select Department---</option>
+                            @foreach (Department department in ViewBag.Departments)
+                            {
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+
+            </table>
+            <br /><br />
+            <table id="scheduleTable" class="display" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Name</th>
+                        <th>Schedule Info</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+
+        </fieldset>
+    </form>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.dataTables.js"></script>
+
+<script>
+    $(function() {
+
+        $("#DepartmentId").change(function () {
+            var table = $("#scheduleTable").DataTable();
+            var deptId = $("#DepartmentId").val();
+            table.clear().draw(false);
+
+            var input = { DepartmentId: deptId };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetClassSchedules", "ViewClassSchedule")',
+                data: JSON.stringify(input),
+                contentType: 'application/json',
+                success: function(response) {
+                    $.each(response, function(key, value) {
+                        table.row.add([
+                            value.CourseCode,
+                            value.CourseName,
+                            value.ScheduleInfo
+                        ]).draw(false);
+
+                    });
+
+                }
+            });
+        });
+
+        $("#viewScheduleForm").validate({
+            rules: {
+                DepartmentId: "required",
+
+            },
+            messages: {
+                DepartmentId: "Please select a department",
+
+            }
+        });
+
+
+    });
+</script>
+
+}

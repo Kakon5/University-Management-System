@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Unallocate Classroom";
+}
+@section styles{
+<link href="~/Content/SweetAlert/sweetalert2.css" rel="stylesheet" />
+    <style>
+    #classroomUnallocateForm {
+        width: 600px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+
+    #unallocateButton {
+        margin-top: 25px;
+        margin-left: 100px;
+        height: 50px;
+        width: 300px;
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+        #message {
+            font-weight: bold;
+            font-size: 20px;
+            color: #6600ff;
+        }
+
+        #footer {
+            margin-left: 330px;
+        }
+</style>
+
+}
+
+<div>
+    <form id="classroomUnallocateForm" method="POST">
+        <fieldset>
+            <legend>Unallocate All Classrooms</legend>
+            <input type="submit" value="Unallocate Rooms" id="unallocateButton" name="unallocateButton" /><br/>
+            <p id="message">@ViewBag.Message</p>
+        </fieldset>
+    </form>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Content/SweetAlert/sweetalert2.js"></script>
+<script>
+    $(function() {
+
+
+        $("#unallocateButton").click(function(e) {
+            e.preventDefault();
+
+
+            Swal.fire({
+                title: 'Are you sure to unallocate all classrooms info?',
+                text: "",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Yes',
+                cancelButtonText: "No",
+                time : 5000
+
+
+            }).then((result) => {
+                if (result.value) {
+
+                    $("#classroomUnallocateForm").submit();
+            Swal.fire(
+                'Unallocated!',
+                'All classrooms are successfully unallocated',
+                'success'
+        )
+        }
+        });
+
+    });
+    });
+</script>
+
+}

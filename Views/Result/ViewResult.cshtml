@@ -1,0 +1,159 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Student
+
+@{
+    ViewBag.Title = "View Result";
+}
+
+@section styles{
+    <link href="~/Content/css/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    #StudentId.error {
+        border: 1px solid red;
+    }
+
+    #StudentId-error {
+        color: red;
+    }
+
+    #resultViewForm {
+        width: 700px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+   
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+
+}
+
+<div>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "resultViewForm" }))
+    {
+        <fieldset>
+            <legend>View Result</legend>
+            <table>
+                <tr>
+                    <td><label for="StudentId">Student Reg. No.</label></td>
+                    <td>
+                        <select id="StudentId" name="StudentId">
+                            <option value="">---Select---</option>
+                            @foreach (Student student in ViewBag.Students)
+                            {
+                                <option value="@student.Id">@student.RegistrationNo</option>
+                            }
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Name)</td>
+                    <td>@Html.TextBoxFor(x => x.Name, new { @readonly = "readonly", id = "Name", style = "width:250px;" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Email)</td>
+                    <td>@Html.TextBoxFor(x => x.Email, new { @readonly = "readonly", id = "Email", style = "width:250px;" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.DepartmentName)</td>
+                    <td>@Html.TextBoxFor(x => x.DepartmentName, new { @readonly = "readonly", id = "DepartmentName", style = "width:250px;" })</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Make PDF" />
+                    </td>
+                </tr>
+            </table>
+
+            <br /><br />
+            <table id="resultTable" class="display" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Name</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </fieldset>
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<script src="~/Scripts/jquery.dataTables.js"></script>
+
+
+<script>
+    $(function() {
+        $("#StudentId").change(function() {
+            var studentId = $("#StudentId").val();
+            $("#Name").val('');
+            $("#Email").val('');
+            $("#DepartmentName").val('');
+
+            var input = { StudentId: studentId };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetStudentInformation", "Result")',
+                data: JSON.stringify(input),
+                contentType: 'application/json',
+                success: function(response) {
+
+                    $("#Name").val(response.Name);
+                    $("#Email").val(response.Email);
+                    $("#DepartmentName").val(response.DepartmentName);
+                }
+            });
+        });
+
+        $("#StudentId").change(function() {
+            var table = $("#resultTable").DataTable();
+            var studentId = $("#StudentId").val();
+
+            table.clear().draw(false);
+
+            var input = { StudentId: studentId };
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetStudentResults", "Result")',
+
+                data: JSON.stringify(input),
+                contentType: 'application/json',
+                success: function(response) {
+                    $.each(response, function(key, value) {
+
+                        table.row.add([
+                            value.CourseCode,
+                            value.CourseName,
+                            value.Grade
+                        ]).draw(false);
+                    });
+                }
+
+            });
+        });
+    });
+</script>
+<script>
+    $("#resultViewForm").validate({
+        rules: {
+            StudentId: "required"
+        },
+        messages: {
+            StudentId: "Please select a registration number"
+        }
+    });
+</script>
+
+
+}

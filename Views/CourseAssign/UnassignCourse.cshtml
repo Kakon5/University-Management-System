@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Unassign Course";
+}
+
+@section styles{
+   <link href="~/Content/SweetAlert/sweetalert2.css" rel="stylesheet" />
+<style>
+    #courseUnassignForm {
+        width: 600px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+
+    #unassignButton {
+        margin-top: 25px;
+        margin-left: 100px;
+        height: 50px;
+        width: 300px;
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+    #message {
+        font-weight: bold;
+        font-size: 20px;
+        color: #6600ff;
+    }
+
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+ 
+}
+
+<div>
+    <form id="courseUnassignForm" method="POST">
+        <fieldset>
+            <legend>Unassign All Courses</legend>
+            <input type="submit" value="Unassign Courses" id="unassignButton" name="unassignButton" /><br/>
+            <p id="message">@ViewBag.Message</p>
+        </fieldset>
+    </form>
+</div>
+
+@section scripts{
+   <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Content/SweetAlert/sweetalert2.js"></script>
+<script>
+    $(function() {
+
+
+        $("#unassignButton").click(function(e) {
+            e.preventDefault();
+
+
+            Swal.fire({
+                title: 'Are you sure to unassign all courses?',
+                text: "",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: 'Yes',
+                cancelButtonText: "No"
+
+
+            }).then((result) => {
+                if (result.value) {
+
+                    $("#courseUnassignForm").submit();
+            Swal.fire(
+                'Unassigned!',
+                'All courses are successfully unassigned',
+                'success'
+        )
+        }
+        });
+
+    });
+    });
+</script>
+ 
+}

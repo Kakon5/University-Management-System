@@ -1,0 +1,86 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Course
+
+@{
+    ViewBag.Title = "Save Course";
+}
+
+@section styles{
+    <style>
+    .input-validation-error {
+        border: 1px solid red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+
+    #saveCourse {
+        width: 600px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+        #message {
+            font-weight: bold;
+            font-size: 20px;
+            color: #6600ff;
+        }
+
+        #footer {
+            margin-left: 330px;
+        }
+</style>
+
+}
+
+<div>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "saveCourse" }))
+    {
+        <fieldset>
+            <legend>Save Course</legend>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Code)</td>
+                    <td>@Html.TextBoxFor(x => x.Code)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Code)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Name)</td>
+                    <td>@Html.TextBoxFor(x => x.Name)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Credit)</td>
+                    <td>@Html.TextBoxFor(x => x.Credit)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Credit)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Description)</td>
+                    <td>@Html.TextAreaFor(x => x.Description)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Description)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.DepartmentId)</td>
+                    <td>@Html.DropDownListFor(x => x.DepartmentId, new SelectList(ViewBag.Departments, "Value", "Text"))</td>
+                    <td>@Html.ValidationMessageFor(x => x.DepartmentId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.SemesterId)</td>
+                    <td>@Html.DropDownListFor(x => x.SemesterId, new SelectList(ViewBag.Semesters, "Value", "Text"))</td>
+                    <td>@Html.ValidationMessageFor(x => x.SemesterId)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save" /></td>
+                </tr>
+            </table><br/>
+            <p id="message">@ViewBag.Message</p>
+        </fieldset>
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

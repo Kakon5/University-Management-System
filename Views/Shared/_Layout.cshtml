@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @RenderSection("styles", required: false)
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav" style="font-weight: bold;">
+                    <li>@Html.ActionLink("Home", "Index", "MainPage")</li>
+                    <li>@Html.ActionLink("Department", "SaveDepartment", "Department")</li>
+                    <li>@Html.ActionLink("View Departments", "ViewDepartments", "Department")</li>
+                    <li>@Html.ActionLink("Course", "SaveCourse", "Course")</li>
+                    <li>@Html.ActionLink("Teacher", "SaveTeacher", "Teacher")</li>
+                    <li>@Html.ActionLink("Course Assign", "AssignCourse", "CourseAssign")</li>
+                    <li>@Html.ActionLink("Course Statics", "ViewCourses", "ViewCourseStatics")</li>
+                    <li>@Html.ActionLink("Student Registration", "RegisterStudent", "Student")</li>
+                    <li>@Html.ActionLink("Classroom Allocate", "AllocateClassroom", "ClassroomAllocate")</li>
+                    <li>@Html.ActionLink("Class Schedules", "ViewSchedules", "ViewClassSchedule")</li>
+                    <li>@Html.ActionLink("Course Enroll", "EnrollCourse", "CourseEnroll")</li>
+                    <li>@Html.ActionLink("Student Result", "SaveResult", "Result")</li>
+                    <li>@Html.ActionLink("View Result", "ViewResult", "Result")</li>
+                    <li>@Html.ActionLink("Course Unassign", "UnassignCourse", "CourseAssign")</li>
+                    <li>@Html.ActionLink("Classroom Unallocate", "UnallocateClassroom", "ClassroomAllocate")</li>
+
+                </ul>
+                @*@Html.Partial("_LoginPartial")*@
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p id="footer">&copy; @DateTime.Now.Year Sikto - University Management System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

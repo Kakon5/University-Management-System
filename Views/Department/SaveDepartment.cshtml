@@ -1,0 +1,65 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Department
+
+@{
+    ViewBag.Title = "Save Department";
+}
+
+@section styles{
+    <style>
+    .input-validation-error {
+        border: 1px solid red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+
+    #saveDepartmentForm {
+        width: 600px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+    #message {
+         font-weight: bold;
+         font-size: 20px;
+         color: #6600ff;
+   }
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+
+}
+<div>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "saveDepartmentForm" }))
+    {
+        <fieldset>
+            <legend>Save Department</legend>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Code)</td>
+                    <td>@Html.TextBoxFor(x => x.Code)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Code)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Name)</td>
+                    <td>@Html.TextBoxFor(x => x.Name)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Name)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save" /></td>
+                </tr>
+            </table><br/>
+            <p id="message">@ViewBag.Message</p>
+        </fieldset>
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}
+

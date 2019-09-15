@@ -1,0 +1,160 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.ClassroomAllocate
+
+@{
+    ViewBag.Title = "Allocate Classroom";
+}
+
+@section styles{
+    
+<link href="~/Scripts/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
+
+<link href="~/Content/jquery.timepicker.css" rel="stylesheet" />
+
+<style>
+    .input-validation-error {
+        border: 1px solid red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+
+    #allocateClassroomform {
+        width: 600px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+    #message {
+        font-weight: bold;
+        font-size: 20px;
+        color: #6600ff;
+    }
+
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+
+}
+
+<div>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new {id = "allocateClassroomform"}))
+    {
+        <fieldset>
+            <legend>Allocate Classrooms</legend>
+            <table>
+
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.DepartmentId)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentId,
+                            new SelectList(ViewBag.Departments, "Value", "Text"), new {id = "departmentId"})
+                    </td>
+                    <td>@Html.ValidationMessageFor(x => x.DepartmentId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.CourseId)</td>
+                    <td>
+                        @Html.DropDownListFor(n => n.CourseId, new SelectList(""), "--Select Course--")
+                    </td>
+                    <td>@Html.ValidationMessageFor(x => x.CourseId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.ClassroomId)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.ClassroomId,
+                            new SelectList(ViewBag.Classrooms, "Value", "Text"))
+                    </td>
+                    <td>@Html.ValidationMessageFor(x => x.ClassroomId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Day)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.Day,
+                            new SelectList(ViewBag.Days, "Value", "Text"))
+                    </td>
+                    <td>@Html.ValidationMessageFor(x => x.Day)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.StartTime)</td>
+                    <td>@Html.TextBoxFor(m => m.StartTime, new {id = "startTime"})</td>
+                    <td>@Html.ValidationMessageFor(m => m.StartTime)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.EndTime)</td>
+                    <td>@Html.TextBoxFor(m => m.EndTime, new {id = "endTime"})</td>
+                    <td>@Html.ValidationMessageFor(m => m.EndTime)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Allocate"/></td>
+                </tr>
+
+            </table><br/>
+            <p id="message">@ViewBag.Message</p>
+
+        </fieldset>
+
+    }
+    </div>
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery.timepicker.js"></script>
+<script>
+        $(function () {
+            $("#startTime").timepicker({
+
+                timeFormat: 'h:i A',
+                maxTime: '6:30 PM',
+                minTime: '8:00 AM'
+
+            });
+            $("#endTime").timepicker({
+
+                timeFormat: 'h:i A',
+                maxTime: '8:00 PM',
+                minTime: '9:30 AM'
+            });
+
+
+
+
+            $("#departmentId").change(function () {
+                var deptId = $("#departmentId").val();
+                $("#CourseId").empty();
+
+
+                $("#CourseId").append('<option value="">--Select Course--</option>');
+                var input = { departmentId: deptId };
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetCoursesByDepartmentId","ClassroomAllocate")',
+
+                    data: JSON.stringify(input),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        $.each(response, function (key, value) {
+                            $("#CourseId").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+
+                        });
+
+                    }
+
+                });
+
+            });
+
+
+        });
+
+</script>
+
+}
+

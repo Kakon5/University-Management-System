@@ -1,0 +1,59 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Department
+
+@{
+    ViewBag.Title = "View Departments";
+}
+
+@section styles{
+    <link href="~/Content/css/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    #departmentView {
+        width: 600px;
+        margin-left: 320px;
+        margin-top: 150px;
+    }
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+
+}
+
+<div>
+    <form id="departmentView">
+        <fieldset>
+            <legend>View All Departments</legend><br />
+            <table id="department" class="display" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Department department in ViewBag.Departments)
+                    {
+                        <tr>
+                            <td>@department.Code</td>
+                            <td>@department.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.dataTables.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#department').DataTable();
+    });
+</script>
+
+}

@@ -1,0 +1,123 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Student
+
+@{
+    ViewBag.Title = "Register Student";
+    Student aStudent = ViewBag.Student;
+    List<SelectListItem> departments = ViewBag.Departments;
+}
+
+@section styles{
+
+    <link href="~/Scripts/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet"/>
+<style>
+    .input-validation-error {
+        border: 1px solid red;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+
+    #studentRegistrationForm {
+        width: 600px;
+        margin-left: 350px;
+        margin-top: 150px;
+    }
+    #message {
+        font-weight: bold;
+        font-size: 20px;
+        color: #6600ff;
+    }
+
+    #footer {
+        margin-left: 330px;
+    }
+</style>
+
+}
+
+<div>
+    
+    @using (Html.BeginForm(null, null, FormMethod.Post, new {id = "studentRegistrationForm"}))
+    {
+        <fieldset>
+            <legend>Register Student</legend>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Name)</td>
+                    <td>@Html.TextBoxFor(x => x.Name)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Email)</td>
+                    <td>@Html.TextBoxFor(x => x.Email)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Email)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.ContactNo)</td>
+                    <td>@Html.TextBoxFor(x => x.ContactNo)</td>
+                    <td>@Html.ValidationMessageFor(x => x.ContactNo)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Date)</td>
+                    <td>@Html.TextBoxFor(x => x.Date, new {id = "selectDate"})</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.Address)</td>
+                    <td>@Html.TextAreaFor(x => x.Address)</td>
+                    <td>@Html.ValidationMessageFor(x => x.Address)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(x => x.DepartmentId)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentId,
+                            new SelectList(ViewBag.Departments, "Value", "Text"))
+                    </td>
+                    <td>@Html.ValidationMessageFor(x => x.DepartmentId)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Register" id="registerButton"/></td>
+                </tr>
+
+            </table>
+            <p id="message">@ViewBag.Message</p>
+        </fieldset>
+        <br/><br/>
+        if (aStudent != null)
+        {
+            <h2>Registration Successfully Completed!</h2><br/>
+            <p>Student Name: @aStudent.Name</p>
+            foreach (var aDepartment in departments)
+            {
+                if (aStudent.DepartmentId.ToString() == aDepartment.Value)
+                {
+                    <p>Department: @aDepartment.Text</p>
+                }
+            }
+            <p>Registration No: @aStudent.RegistrationNo</p>
+            <p>Email: @aStudent.Email</p>
+            <p>Contact No: @aStudent.ContactNo</p>
+            <p>Address: @aStudent.Address</p>
+            <p>Date: @aStudent.Date.ToString("dd/MM/yyyy")</p>
+        }
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.js"></script>
+
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<script src="~/Scripts/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script>
+    $(function () {
+        $("#selectDate").datepicker().datepicker("setDate", new Date());
+    });
+
+</script>
+
+}
