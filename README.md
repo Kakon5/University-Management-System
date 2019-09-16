@@ -1,6 +1,6 @@
 # University-Management-System
 
-This Project works only for single semester of a university. It has 14 user interfaces. Full project was completed in ASP.NET.
+This Project works only for single semester of a university. It has 14 user interfaces. Full project was completed in ASP.NETMVC.
 
 1. Save Department
 2. View  All Departments
